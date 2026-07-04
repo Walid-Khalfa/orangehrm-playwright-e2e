@@ -1,0 +1,23 @@
+import { expect, test } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
+
+test.describe('OrangeHRM login', () => {
+  test('connexion réussie', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.goto();
+    await loginPage.login('Admin', 'admin123');
+
+    await expect(loginPage.dashboardHeading).toBeVisible();
+    await expect(page).toHaveURL(/\/dashboard\/index$/);
+  });
+
+  test('mot de passe incorrect', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.goto();
+    await loginPage.login('Admin', 'wrong-password');
+
+    await expect(loginPage.errorMessage).toHaveText('Invalid credentials');
+  });
+});

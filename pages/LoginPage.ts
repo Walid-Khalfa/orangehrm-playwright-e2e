@@ -7,6 +7,7 @@ export class LoginPage {
   readonly loginButton: Locator;
   readonly errorMessage: Locator;
   readonly dashboardHeading: Locator;
+  readonly forgotPasswordLink: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -15,10 +16,18 @@ export class LoginPage {
     this.loginButton = page.getByRole('button', { name: 'Login' });
     this.errorMessage = page.locator('.oxd-alert-content-text');
     this.dashboardHeading = page.getByRole('heading', { name: 'Dashboard' });
+    this.forgotPasswordLink = page.getByRole('link', { name: 'Forgot your password?' });
   }
 
   async goto(): Promise<void> {
     await this.page.goto('/');
+    await this.waitForPageToLoad();
+  }
+
+  async waitForPageToLoad(): Promise<void> {
+    await expect(this.usernameInput).toBeVisible({ timeout: 10000 });
+    await expect(this.passwordInput).toBeVisible();
+    await expect(this.loginButton).toBeEnabled();
   }
 
   async login(username: string, password: string): Promise<void> {
@@ -28,7 +37,21 @@ export class LoginPage {
   }
 
   async loginWithDefaultCredentials(): Promise<void> {
-    await this.login('Admin', 'admin123');
-    await expect(this.dashboardHeading).toBeVisible();
+    const username = process.env.USERNAME || 'Admin';
+    const password = process.env.PASSWORD || 'admin123';
+    await this.login(username, password);
+    await expect(this.dashboardHeading).toBeVisible({ timeout: 10000 });
+  }
+
+  async getErrorText(): Promise<string> {
+    return await this.errorMessage.textContent() || '';
+  }
+
+  async isLoginButtonEnabled(): Promise<boolean> {
+    return await this.loginButton.isEnabled();
+  }
+
+  async clickForgotPassword(): Promise<void> {
+    await this.forgotPasswordLink.click();
   }
 }

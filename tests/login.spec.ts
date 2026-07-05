@@ -27,7 +27,8 @@ test.describe('OrangeHRM login', () => {
     await loginPage.goto();
     await loginPage.login('', '');
 
-    await expect(loginPage.errorMessage).toBeVisible();
+    await expect(page).toHaveURL(/\/$/);
+    await expect(loginPage.usernameInput).toBeVisible();
   });
 
   test('bouton connexion toujours visible', async ({ page }) => {

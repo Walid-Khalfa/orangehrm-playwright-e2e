@@ -16,7 +16,7 @@ jobs:
       
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
@@ -26,7 +26,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npm run test:ci
+        run: npx playwright test --project=chromium
         env:
           USERNAME: ${{ secrets.ORANGEHRM_USERNAME }}
           PASSWORD: ${{ secrets.ORANGEHRM_PASSWORD }}
@@ -46,32 +46,9 @@ jobs:
         with:
           path: playwright-report/
 
-  deploy-report:
-    if: always() && github.ref == 'refs/heads/main'
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - uses: actions/download-artifact@v4
-        with:
-          name: playwright-test-results
-          path: test-results/
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: playwright-test-results
-          path: playwright-report/
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Upload pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: playwright-report/
-
       - name: Deploy to GitHub Pages
+        if: always() && github.ref == 'refs/heads/main'
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

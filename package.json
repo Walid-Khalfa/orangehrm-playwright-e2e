@@ -10,7 +10,9 @@
     "test:debug": "playwright test --debug",
     "test:visual": "playwright test --project=chromium",
     "test:ci": "playwright test --reporter=html,json,github",
-    "test:install": "playwright install-deps"
+    "test:install": "playwright install-deps",
+    "allure:generate": "allure generate allure-results --clean",
+    "allure:serve": "allure serve allure-results"
   },
   "repository": {
     "type": "git",
@@ -22,10 +24,10 @@
   "type": "commonjs",
   "homepage": "https://github.com/Walid-Khalfa/playwright-gemini-automation#readme",
   "devDependencies": {
-    "@axe-core/playwright": "^4.12.1",
     "@playwright/test": "^1.61.1",
     "@types/node": "^26.1.0",
-    "dotenv": "^16.6.1",
-    "typescript": "^6.0.3"
-  }
+    "@axe-core/playwright": "^4.9.0",
+    "dotenv": "^16.4.5",
+    "allure-playwright": "^3.1.0"
+  },
 }

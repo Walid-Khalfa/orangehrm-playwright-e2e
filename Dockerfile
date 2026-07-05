@@ -1,19 +1,43 @@
 # syntax=docker/dockerfile:1.4
 
-FROM node:22-alpine
+FROM node:22-alpine AS base
 
-# Installation des dépendances du système nécessaires pour Playwright
+# Install system dependencies for Playwright
 RUN apk add --no-cache \
     ca-certificates \
     dumb-init \
     git \
     chromium \
     nss-tools \
-    # Ajoutez d'autres dépendances du système si nécessaire
-;
+    unzip \
+    wget \
+    curl
 
-# Installation des navigateurs pour Chromium via le système de paquets (solution plus stable)
-RUN apk add --no-cache wget gnupg unzip
+# Create app directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies using node-modules cache layer optimization
+RUN npm ci
+
+# Copy the rest of the application code
+COPY . .
+
+# Create non-root user for security
+RUN addgroup -g 1001 playwright && \
+    adduser -D -u 1001 -G playwright playwright
+
+# Change ownership of app directory to playwright user
+RUN chown -R playwright:playwright /app
+
+# Switch to non-root user
+USER playwright
+
+# Default command to run tests
+CMD ["dumb-init", "npx", "playwright", "test"]
+
 
 # Créer un utilisateur non-root pour la sécurité
 RUN addgroup -g 1001 playwright && \

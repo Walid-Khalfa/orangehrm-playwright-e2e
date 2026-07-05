@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  playwright-tests:
+    build: .
+    container_name: playwright-gemini
+    volumes:
+      - ./test-results:/app/test-results
+      - ./playwright-report:/app/playwright-report
+    environment:
+      - USERNAME=${USERNAME:-Admin}
+      - PASSWORD=${PASSWORD:-admin123}
+      - BASE_URL=${BASE_URL:-https://opensource-demo.orangehrmlive.com}
+    command: npx playwright test --project=chromium
+    restart: "no"

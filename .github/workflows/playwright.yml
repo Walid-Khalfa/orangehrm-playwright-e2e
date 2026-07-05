@@ -13,7 +13,6 @@ jobs:
     permissions:
       id-token: write
       contents: read
-      pages: write
 
     steps:
       - uses: actions/checkout@v7
@@ -43,16 +42,3 @@ jobs:
           path: |
             test-results/
             playwright-report/
-
-      - name: Upload test report
-        if: always()
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: playwright-report/
-
-      - name: Deploy to GitHub Pages
-        if: always() && github.ref == 'refs/heads/main'
-        id: deployment
-        uses: actions/deploy-pages@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}

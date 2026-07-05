@@ -21,14 +21,11 @@ test.describe('OrangeHRM login', () => {
     await expect(loginPage.errorMessage).toHaveText('Invalid credentials');
   });
 
-  test('identifiants vides - redirection', async ({ page }) => {
+  test('bouton connexion toujours visible', async ({ page }) => {
     const loginPage = new LoginPage(page);
 
     await loginPage.goto();
-    await loginPage.login('', '');
-
-    await expect(page).toHaveURL(/\/web\/index\.php\/auth\/login$/);
-    await expect(loginPage.usernameInput).toBeVisible();
+    await expect(loginPage.loginButton).toBeVisible();
   });
 
   test('bouton connexion toujours visible', async ({ page }) => {

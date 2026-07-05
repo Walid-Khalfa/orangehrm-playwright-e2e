@@ -246,8 +246,5 @@ playwright-gemini-automation/
 
 ---
 
-## 🙏 Remerciements
-
-Réalisé avec l'assistance de **GitHub Copilot** en mode Agent.
 
 ⭐ **N'hésitez pas à "star" le dépôt !**

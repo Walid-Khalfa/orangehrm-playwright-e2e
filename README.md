@@ -4,6 +4,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178c6.svg)
 ![GitHub Codespaces](https://img.shields.io/badge/Codespaces-Compatible-181717.svg)
 ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-CI/CD-2088FF.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 Un framework de test End-to-End (E2E) pour la page de connexion de **OrangeHRM**, construit avec **Playwright** et **TypeScript**. Ce projet applique le modèle **Page Object Model (POM)** pour centraliser les sélecteurs et les actions, rendant les tests plus simples, lisibles et faciles à maintenir.
 
@@ -22,7 +23,7 @@ Ce dépôt sert de démonstration pour l'automatisation de tests sur une applica
 
 ## 📋 Prérequis
 
-- **Node.js** v20 ou plus ([Télécharger](https://nodejs.org/))
+- **Node.js** v22 ou plus ([Télécharger](https://nodejs.org/))
 - Un compte **GitHub** (pour utiliser Codespaces) ou une installation locale de Git.
 - (Optionnel) Un éditeur de code comme **VS Code**.
 
@@ -103,8 +104,13 @@ npm run test:report -- --port 9324
 ## 🔄 CI/CD
 
 Le workflow GitHub Actions (`.github/workflows/playwright.yml`) exécute automatiquement les tests à chaque push sur `main` ou `master`. Ajoutez les secrets suivants dans votre dépôt :
-- `ORANGEHRM_USERNAME`
-- `ORANGEHRM_PASSWORD`
+
+| Secret | Description |
+|--------|-------------|
+| `ORANGEHRM_USERNAME` | Nom d'utilisateur OrangeHRM |
+| `ORANGEHRM_PASSWORD` | Mot de passe OrangeHRM |
+
+Le workflow utilise les dernières versions des actions GitHub officielles et nécessite les permissions `id-token: write` et `contents: read` sur le jeton `GITHUB_TOKEN` pour déployer les rapports sur GitHub Pages.
 
 ---
 

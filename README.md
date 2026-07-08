@@ -1,250 +1,134 @@
 # 🧪 OrangeHRM Automation Framework
 
-![Playwright](https://img.shields.io/badge/Playwright-E2E-45ba4b.svg)
-![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178c6.svg)
-![GitHub Codespaces](https://img.shields.io/badge/Codespaces-Compatible-181717.svg)
-![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-CI/CD-2088FF.svg)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+[![Playwright](https://img.shields.io/badge/Playwright-E2E-45ba4b.svg)](https://playwright.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178c6.svg)](https://www.typescriptlang.org/)
+[![GitHub Actions](https://img.shields.io/badge/CI-Playwright-2088ff.svg)](https://github.com/Walid-Khalfa/playwright-gemini-automation/actions)
+[![GitHub Codespaces](https://img.shields.io/badge/Codespaces-Compatible-181717.svg)](https://github.com/features/codespaces)
 
-Un framework de test End-to-End (E2E) pour la page de connexion de **OrangeHRM**, construit avec **Playwright** et **TypeScript**. Ce projet applique le modèle **Page Object Model (POM)** pour centraliser les sélecteurs et les actions, rendant les tests plus simples, lisibles et faciles à maintenir.
+End-to-end test automation for the [OrangeHRM](https://opensource-demo.orangehrmlive.com) demo application, built with **Playwright** and **TypeScript** using the **Page Object Model** pattern.
 
----
+## ✨ Features
 
-## 🎯 Objectif du projet
+- **Page Object Model (POM)** architecture for maintainable, reusable page interactions (`pages/LoginPage.ts`).
+- **Multi-browser coverage** — Chromium, Firefox and WebKit, plus mobile viewports (Pixel 5, iPhone 12).
+- **Functional tests** — login success, invalid credentials, and UI element visibility.
+- **Accessibility tests** — automated `axe-core` scans (WCAG 2.0 A).
+- **Performance tests** — page load and form-interaction timing checks.
+- **Security checks** — verifies the application is served over HTTPS.
+- **Visual regression tests** — screenshot comparisons (skipped by default, opt-in).
+- **CI/CD** — GitHub Actions workflow running the full suite on every push/PR.
+- **Reporting** — HTML, JSON and Allure reporters, with traces and failure artifacts.
 
-Ce dépôt sert de démonstration pour l'automatisation de tests sur une application web réelle (le site de démonstration Open Source d'OrangeHRM). Il a été conçu pour aider les débutants à comprendre comment :
-- Structurer un projet d'automatisation professionnel
-- Utiliser le modèle POM avec des méthodes réutilisables
-- Exécuter des tests dans le cloud (GitHub Codespaces)
-- Générer des rapports détaillés avec captures d'écran
-- Intégrer des tests d'accessibilité et de régression visuelle
+## 📋 Prerequisites
 
----
+- [Node.js](https://nodejs.org/) 22+
+- npm 10+
+- Git
 
-## 📋 Prérequis
-
-- **Node.js** v22 ou plus ([Télécharger](https://nodejs.org/))
-- Un compte **GitHub** (pour utiliser Codespaces) ou une installation locale de Git.
-- (Optionnel) Un éditeur de code comme **VS Code**.
-
----
-
-## 🚀 Installation et configuration
+## 🚀 Getting started
 
 ```bash
-# 1. Cloner le dépôt
+# Clone the repository
 git clone https://github.com/Walid-Khalfa/playwright-gemini-automation.git
 cd playwright-gemini-automation
 
-# 2. Installer les dépendances
+# Install dependencies
 npm install
 
-# 3. (Optionnel) Créer le fichier d'environnement
+# Install Playwright browsers (with OS dependencies)
+npx playwright install --with-deps
+```
+
+### Environment variables
+
+Copy `.env.example` to `.env` to override defaults (all values have sensible defaults):
+
+```bash
 cp .env.example .env
 ```
 
----
+| Variable    | Default                                         | Description              |
+| ----------- | ----------------------------------------------- | ------------------------ |
+| `BASE_URL`  | `https://opensource-demo.orangehrmlive.com`     | Application base URL     |
+| `USERNAME`  | `Admin`                                         | Login username           |
+| `PASSWORD`  | `admin123`                                      | Login password           |
 
-## ⚙️ Configuration
+## 🧪 Running the tests
 
-La configuration principale se trouve dans `playwright.config.ts`. Elle inclut :
-- **Variables d'environnement** pour les credentials (`.env`)
-- Les traces, captures d'écran et vidéos en cas d'échec
-- Les navigateurs cibles (Chromium, Firefox, WebKit)
-- Reporters HTML, JSON et liste
+| Script                 | Description                                          |
+| ---------------------- | ---------------------------------------------------- |
+| `npm test`             | Run all tests across all configured projects         |
+| `npm run test:headed`  | Run tests in a headed browser                         |
+| `npm run test:debug`   | Run tests in debug mode (step-by-step)               |
+| `npm run test:visual`  | Run only the Chromium project                        |
+| `npm run test:ci`      | Run with HTML, JSON and GitHub reporters (CI mode)   |
+| `npm run test:report`  | Open the last HTML report (`playwright show-report`) |
 
----
-
-## ▶️ Lancement des tests
+Example — run a single browser/project:
 
 ```bash
-# Exécution standard (headless)
-npm test
-
-# Exécuter uniquement sur Chromium
 npx playwright test --project=chromium
-
-# Mode "headed" (avec interface visible)
-npm run test:headed
-
-# Mode débogage (pas à pas)
-npm run test:debug
-
-# Tests visuels
-npm run test:visual
-
-# Tous les navigateurs
-npx playwright test
 ```
 
----
+### Visual regression tests
 
-## 📊 Rapport de test
-
-Après l'exécution, Playwright génère un rapport HTML interactif :
+The visual tests in `tests/visual.spec.ts` are **skipped by default** because they require committed baseline screenshots and are environment-sensitive. To run them, remove the `test.describe.skip` wrapper (or change it to `test.describe`) and generate baselines with:
 
 ```bash
-npm run test:report -- --port 9324
+npx playwright test --project=chromium --update-snapshots
 ```
 
----
+## 📁 Project structure
 
-## 🧪 Types de tests
-
-| Fichier | Description |
-|---------|-------------|
-| `login.spec.ts` | Tests de connexion (succès, échec, champs vides) |
-| `https.spec.ts` | Vérification du protocole HTTPS |
-| `accessibility.spec.ts` | Tests WCAG d'accessibilité |
-| `visual.spec.ts` | Tests de régression visuelle |
-| `performance.spec.ts` | Tests de performance basiques |
-
----
+```
+.
+├── pages/                 # Page Object Model classes
+│   └── LoginPage.ts
+├── tests/                 # Test specifications
+│   ├── login.spec.ts
+│   ├── accessibility.spec.ts
+│   ├── performance.spec.ts
+│   ├── https.spec.ts
+│   ├── visual.spec.ts
+│   └── test-data.ts       # Centralized test data
+├── .github/workflows/     # CI/CD pipeline
+│   └── playwright.yml
+├── playwright.config.ts   # Global Playwright configuration
+├── package.json
+└── tsconfig.json
+```
 
 ## 🔄 CI/CD
 
-Le workflow GitHub Actions (`.github/workflows/playwright.yml`) exécute automatiquement les tests à chaque push sur `main` ou `master`. Ajoutez les secrets suivants dans votre dépôt :
+The GitHub Actions workflow (`.github/workflows/playwright.yml`) runs on every push to `main`/`master` and on pull requests. It:
 
-| Secret | Description |
-|--------|-------------|
-| `ORANGEHRM_USERNAME` | Nom d'utilisateur OrangeHRM |
-| `ORANGEHRM_PASSWORD` | Mot de passe OrangeHRM |
+1. Checks out the code and sets up Node.js 22.
+2. Installs dependencies with `npm ci`.
+3. Installs the Playwright browser for the current matrix job.
+4. Runs the suite against Chromium, Firefox and WebKit (with retries).
+5. Uploads the HTML report and test results as build artifacts on every run.
 
-Le workflow utilise les dernières versions des actions GitHub officielles et nécessite les permissions `id-token: write` et `contents: read` sur le jeton `GITHUB_TOKEN` pour déployer les rapports sur GitHub Pages.
+Optional credentials `ORANGEHRM_USERNAME` / `ORANGEHRM_PASSWORD` can be stored as repository secrets; the suite falls back to the public demo credentials otherwise.
 
----
+## 📊 Reports
 
-## 🧹 Dépannage (Troubleshooting)
-
-| Erreur | Solution |
-| :--- | :--- |
-| **`EADDRINUSE: address already in use`** | Changez de port avec `--port 9324` ou fermez l'onglet du rapport. |
-| **`Host system is missing dependencies`** | Installez les dépendances : `sudo npx playwright install-deps` |
-| **`Missing X server`** | Retenez l'option `--headed` ou utilisez `xvfb-run`. |
-
----
-
-## 🐳 Lancer les tests avec Docker
-
-Si vous ne voulez pas installer Node.js, Playwright ou les navigateurs sur votre machine, vous pouvez utiliser **Docker**. Docker va exécuter les tests dans un conteneur isolé. C'est utile si vous débutez ou si vous voulez éviter les problèmes de configuration.
-
-### Prérequis
-
-1. Installer Docker Desktop : https://www.docker.com/products/docker-desktop/
-2. Vérifier que Docker fonctionne :
-   ```bash
-   docker --version
-   ```
-
-### Étape 1 : Préparer le fichier `.env`
-
-Docker a besoin d'un fichier `.env` pour se connecter à OrangeHRM. Si ce n'est pas déjà fait :
+After a run, open the HTML report locally:
 
 ```bash
-cp .env.example .env
+npm run test:report
 ```
 
-Puis ouvrez le fichier `.env` et vérifiez que les identifiants sont corrects.
-
-### Étape 2 : Construire l'image
-
-Depuis la racine du projet, lancez :
+Allure results are produced by the `allure-playwright` reporter and can be served with:
 
 ```bash
-docker build -t playwright-gemini .
+npm run allure:generate
+npm run allure:serve
 ```
 
-> **Explication** : Cette commande crée une "image" Docker (un modèle) nommée `playwright-gemini`. Elle installe Node.js, les dépendances du projet et le navigateur Chromium automatiquement.
+## 🤝 Contributing
 
-### Étape 3 : Lancer les tests
+Contributions are welcome! Please read the [Contribution Guide](CONTRIBUTING.md) and the [Learning Guide](LEARNING_GUIDE.md) for coding standards, the POM approach, and good testing practices before opening a pull request.
 
-Pour exécuter tous les tests :
+## 📄 License
 
-```bash
-docker run --rm playwright-gemini
-```
-
-> **Explication** : Cette commande démarre un conteneur temporaire (`--rm` signifie qu'il sera supprimé automatiquement après l'exécution) et lance les tests Playwright à l'intérieur.
-
-### Étape 4 : Récupérer les résultats
-
-Pour récupérer les rapports et captures d'écran après l'exécution :
-
-```bash
-docker run --rm -v $(pwd)/test-results:/app/test-results \
-           -v $(pwd)/playwright-report:/app/playwright-report \
-           playwright-gemini
-```
-
-> **Explication** :
-> - `-v $(pwd)/test-results:/app/test-results` copie le dossier `test-results` depuis le conteneur vers votre machine.
-> - `-v $(pwd)/playwright-report:/app/playwright-report` copie le rapport HTML vers votre machine.
-> - Sur Windows, remplacez `$(pwd)` par `%cd%`.
-
-### Étape 5 : Ouvrir le rapport HTML
-
-Une fois les tests terminés, ouvrez le rapport dans votre navigateur :
-
-```bash
-npx playwright show-report
-```
-
-### Commandes Docker utiles
-
-#### Avec Docker Compose (recommandé pour les débutants)
-
-Un fichier `docker-compose.yml` est disponible pour simplifier les commandes :
-
-```bash
-# Lancer les tests (avec récupération automatique des rapports)
-docker compose up --build
-
-# Relancer sans reconstruire l'image
-docker compose up
-
-# Voir les logs en temps réel
-docker compose logs -f
-
-# Arrêter le conteneur
-docker compose down
-```
-
-#### Avec Docker seul
-
-| Commande | Description |
-| :--- | :--- |
-| `docker build -t playwright-gemini .` | Construire l'image Docker |
-| `docker run --rm playwright-gemini` | Lancer tous les tests |
-| `docker run --rm playwright-gemini npx playwright test --project=chromium` | Lancer uniquement les tests Chromium |
-| `docker run --rm -v $(pwd)/test-results:/app/test-results playwright-gemini` | Lancer les tests et récupérer les résultats |
-| `docker images` | Voir les images Docker installées |
-| `docker rmi playwright-gemini` | Supprimer l'image Docker |
-
----
-
-## 📁 Structure du projet
-
-```text
-playwright-gemini-automation/
-├── .github/
-│   └── workflows/
-│       └── playwright.yml     # CI/CD GitHub Actions
-├── pages/
-│   └── LoginPage.ts           # Page Object Model
-├── tests/
-│   ├── login.spec.ts          # Tests de connexion
-│   ├── https.spec.ts          # Vérification HTTPS
-│   ├── accessibility.spec.ts  # Tests WCAG
-│   ├── visual.spec.ts         # Régression visuelle
-│   └── performance.spec.ts      # Tests performance
-├── playwright.config.ts       # Configuration
-├── docker-compose.yml         # Configuration Docker Compose
-├── Dockerfile                 # Image Docker pour les tests
-├── .env.example              # Exemple variables d'environnement
-└── package.json
-```
-
----
-
-
-⭐ **N'hésitez pas à "star" le dépôt !**
+ISC

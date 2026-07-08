@@ -1,27 +1,28 @@
 import { expect, test } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
+import { TestData } from './test-data';
 
 test.describe('OrangeHRM login', () => {
-  test('connexion réussie', async ({ page }) => {
+  test('successful login', async ({ page }) => {
     const loginPage = new LoginPage(page);
 
     await loginPage.goto();
-    await loginPage.login('Admin', 'admin123');
+    await loginPage.login(TestData.Users.VALID_USER.username, TestData.Users.VALID_USER.password);
 
     await expect(loginPage.dashboardHeading).toBeVisible();
-    await expect(page).toHaveURL(/\/dashboard\/index$/);
+    await expect(page).toHaveURL(new RegExp(TestData.URLs.DASHBOARD_PAGE));
   });
 
-  test('mot de passe incorrect', async ({ page }) => {
+  test('login with invalid password', async ({ page }) => {
     const loginPage = new LoginPage(page);
 
     await loginPage.goto();
-    await loginPage.login('Admin', 'wrong-password');
+    await loginPage.login(TestData.Users.INVALID_USER.username, TestData.Users.INVALID_USER.password);
 
-    await expect(loginPage.errorMessage).toHaveText('Invalid credentials');
+    await expect(loginPage.errorMessage).toHaveText(TestData.ExpectedText.ERROR_MESSAGE_INVALID_CREDENTIALS);
   });
 
-  test('bouton connexion toujours visible', async ({ page }) => {
+  test('login button is always visible', async ({ page }) => {
     const loginPage = new LoginPage(page);
 
     await loginPage.goto();

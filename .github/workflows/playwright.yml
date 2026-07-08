@@ -32,7 +32,18 @@ jobs:
         run: npx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Run Playwright tests
-        run: npx playwright test --project=${{ matrix.browser }} --retries=2
+        # WebKit's headless mode on Linux is unstable on CI runners and crashes
+        # with "Operation was cancelled; maybe frame was detached?" at the first
+        # navigation. Running it under a virtual display (xvfb, installed by
+        # `playwright install --with-deps webkit`) gives WebKit a real display
+        # server and makes it reliable. Chromium/Firefox are fine headless.
+        run: |
+          if [ "${{ matrix.browser }}" = "webkit" ]; then
+            xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" \
+              npx playwright test --project=webkit --retries=2
+          else
+            npx playwright test --project=${{ matrix.browser }} --retries=2
+          fi
         env:
           USERNAME: ${{ secrets.ORANGEHRM_USERNAME }}
           PASSWORD: ${{ secrets.ORANGEHRM_PASSWORD }}

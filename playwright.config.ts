@@ -8,6 +8,12 @@ export default defineConfig({
   snapshotPath: './tests/__snapshots__',
   use: {
     baseURL: process.env.BASE_URL || 'https://opensource-demo.orangehrmlive.com',
+    /* Tolerant timeouts so brief slowness/rate-limiting of the shared
+       demo site does not abort navigation or actions in CI. */
+    timeout: 60000,
+    expect: { timeout: 10000 },
+    navigationTimeout: 60000,
+    actionTimeout: 30000,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',

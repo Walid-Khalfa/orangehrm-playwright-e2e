@@ -30,7 +30,7 @@ End-to-end test automation for the [OrangeHRM](https://opensource-demo.orangehrm
 ```bash
 # Clone the repository
 git clone https://github.com/Walid-Khalfa/orangehrm-playwright-e2e.git
-cd playwright-gemini-automation
+cd orangehrm-playwright-e2e
 
 # Install dependencies
 npm install

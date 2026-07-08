@@ -2,7 +2,7 @@
 
 [![Playwright](https://img.shields.io/badge/Playwright-E2E-45ba4b.svg)](https://playwright.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178c6.svg)](https://www.typescriptlang.org/)
-[![GitHub Actions](https://img.shields.io/badge/CI-Playwright-2088ff.svg)](https://github.com/Walid-Khalfa/playwright-gemini-automation/actions)
+[![GitHub Actions](https://img.shields.io/badge/CI-Playwright-2088ff.svg)](https://github.com/Walid-Khalfa/orangehrm-playwright-e2e/actions)
 [![GitHub Codespaces](https://img.shields.io/badge/Codespaces-Compatible-181717.svg)](https://github.com/features/codespaces)
 
 End-to-end test automation for the [OrangeHRM](https://opensource-demo.orangehrmlive.com) demo application, built with **Playwright** and **TypeScript** using the **Page Object Model** pattern.
@@ -29,7 +29,7 @@ End-to-end test automation for the [OrangeHRM](https://opensource-demo.orangehrm
 
 ```bash
 # Clone the repository
-git clone https://github.com/Walid-Khalfa/playwright-gemini-automation.git
+git clone https://github.com/Walid-Khalfa/orangehrm-playwright-e2e.git
 cd playwright-gemini-automation
 
 # Install dependencies
